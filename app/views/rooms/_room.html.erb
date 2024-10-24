@@ -3,29 +3,38 @@
     <h3 class="font-bold text-3xl text-white">
       <%= room.name%> - Room
     </h3>
-    <span class="text-white font-semibold">Users en esta Room: </span>
+    <span class="text-white font-semibold">Usuarios: </span>
   </div>
 
   <section>
     <div class="py-2 px-10 flex flex-col gap-1 items-center border-sky-600 border rounded-lg my-2 shadow-lg w-96">
       <h3 class="text-white font-semibold text-center">Usuarios en esta room</h3>
-      <%User.all.each do |user|%>
+      <%User.all.each do |user|%> 
         <% next unless room.users.include?(user)%>
         <div class="rounded underline text-white my-1 font-semibold text-sm">
+        <%= form_with url: remove_user_room_path(user_id: user.id, room_id: room.id ), method: :delete, local: true do %>
+
+          <%= button_tag type: :submit do%>
           <%= user.email%>
+          <%end%>
         </div>
+      <%end%>
       <%end%>
     </div>
     <div class="py-2 px-10 flex flex-col gap-1 items-center border-sky-600 border rounded-lg my-2 shadow-lg w-96">
       <h3 class="text-white font-semibold text-center">Agregar usarios</h3>
       <%User.all.each do |user|%>
         <% next if room.users.include?(user)%>
-        <%= button_to add_user_path, params:{user_id: user, room_id: room}, id:"add_user_#{user.id}", method: :post do%>
+        <%= form_with url: add_user_room_path(room_id: room.id), method: :post, local: true do %>
+            <%= hidden_field_tag :user_id, user.id %>
+            <%= hidden_field_tag :room_id, room.id %>
+        <%= button_tag  type: :submit do%>
         <div class="rounded underline text-white my-1 font-semibold text-sm">
           <%= user.email%>
         </div>
+        <%end%>
           <%end%>
-      <%end%>
+            <%end%>
     </div>
   </section>
 </section>

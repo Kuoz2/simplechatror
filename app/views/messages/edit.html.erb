@@ -1,3 +1,4 @@
 <%= turbo_frame_tag "message_#{@message.id}", class:'bg-gay-200 px-3 flex justify-between rounded item-center gap-2 shadow' do %>
-    <%= render 'messages/form', {room: @room, message:@message}%>
+    <%= render 'messages/form', {room: @room, message:@message} %>
+
 <%end%>

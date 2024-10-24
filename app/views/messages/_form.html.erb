@@ -1,8 +1,13 @@
-<div data-controller="form">
-    <%= form_with(model: [room, message], id: 'message_form', class: 'w-full flex flex-col', , data: {controller:'form', action: 'submit->form#resetComponent'}) do |f|%>
+<div data-controller="form imagen-preview">
+        <%= form_with(model: [room, message], id: 'message_form', class: 'w-full flex flex-col', data: {controller:'form', action: 'submit->form#resetComponent'}, multipart: true) do |f|%>
         <div class="flex w-full ">
             <%= f.text_field :message, class:'w-full rounded shadow text-sm font-semibold border-gray-100' %>
-            <%= f.submit class: 'bg-green-600 text-white font-semibold rounded p-2'%>
+            <%= f.file_field :image, class: 'font-semibold text-sm mb-1', data: { action: 'change->imagen-preview#preview', imagen_preview_target: 'input' } %>
+            <%= f.submit 'Subir desarrollo de la tarea',class: 'bg-green-600 text-white font-semibold rounded p-2' %>
+        </div>
+
+        <div class="mt-2">
+            <img data-imagen-preview-target="preview" class="hidden w-32 h-32 object-cover rounded" alt="Vista previa" />
         </div>
     <%end%>
 </div>

@@ -1,15 +1,18 @@
 class RoomsController < ApplicationController
   before_action :authenticate_user!
-
-  before_action :set_room, only: %i[ show edit update destroy ]
+  before_action :set_room, only: %i[show edit update destroy add_user remove_user]
+  before_action :authorize_admin, only: %i{new create}
 
   # GET /rooms or /rooms.json
   def index
-    @rooms = Room.all
+    @rooms = current_user.admin? ? Room.all : current_user.rooms
   end
 
   # GET /rooms/1 or /rooms/1.json
   def show
+    unless current_user.admin? || @room.users.include?(current_user)
+      redirect_to rooms_path, alert:"No tienes acceso a esta room"
+    end
   end
 
   # GET /rooms/new
@@ -19,6 +22,7 @@ class RoomsController < ApplicationController
 
   # GET /rooms/1/edit
   def edit
+    
   end
 
   # POST /rooms or /rooms.json
@@ -51,12 +55,51 @@ class RoomsController < ApplicationController
   end
 
   def add_user
-    UserRoom.create(room_id: params[:room_id], user_id: params[:user_id])
-    respond_to do |format|
-        format.turbo_stream {render turbo_stream: turbo_stream.replace("room_show_#{params[:room_id]}", partial:'rooms/room', locals:{room: Room.find(params[:room_id])})}
+
+    unless current_user.admin?
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("rooms_controller", partial: 'shared/error', locals: { message: "No tienes permiso para agregar usuarios." }) }
+        format.html { redirect_to rooms_path, alert: "No tienes permiso para agregar usuarios." }
+      end
+      return
+    end
+  
+    begin
+      UserRoom.create!(room: @room, user_id: params[:user_id])
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("room_show_#{@room.id}", partial: 'rooms/room', locals: { room: @room }) }
+        format.html { redirect_to @room, notice: "Usuario agregado con éxito." }
+      end
+    rescue => e
+      logger.error "Error al agregar usuario: #{e.message}"
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("rooms_controller", partial: 'shared/error', locals: { message: "Error al agregar usuario: #{e.message}" }) }
+        format.html { redirect_to rooms_path, alert: "Se produjo un error: #{e.message}" }
+      end
     end
   end
 
+  def remove_user
+    unless current_user.admin?
+      
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("rooms_controller", partial: 'shared/error', locals: { message: "No tienes permiso para eliminar usuarios." }) }
+        format.html { redirect_to rooms_path, alert: "No tienes permiso para eliminar usuarios." }
+      end
+      return
+    end
+  
+    user_room = UserRoom.find_by(room: @room, user_id: params[:user_id])
+    if user_room
+      user_room.destroy
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("room_show_#{@room.id}", partial: 'rooms/room', locals: { room: @room }) }
+        format.html { redirect_to @room, notice: "Usuario eliminado con éxito." }
+      end
+    else
+      redirect_to @room, alert: "Usuario no encontrado en esta room"
+    end
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_room
@@ -66,5 +109,11 @@ class RoomsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def room_params
       params.require(:room).permit(:name)
+    end
+
+    def authorize_admin
+      unless current_user&.admin?
+        redirect_to rooms_path, alert: "No tienes permiso para esta acción"
+      end
     end
 end

@@ -3,6 +3,30 @@
         <span class="text-gray-500 text-sm"><%= message.user.email %></span>
         <span class="font-semibold text-sm"><%= message.message %></span>
     </div>
+       <div data-controller="toggle-visibility" class="flex gap-1">
+  <!-- Botón para alternar la visibilidad del contenido -->
+  <button type="button" class="text-sm font-medium bg-blue-800 text-white py-1 px-3 rounded" data-action="toggle-visibility#toggle">
+    Mostrar/Ocultar contenido
+  </button>
+
+  <!-- Modal para mostrar la imagen y el mensaje -->
+  <div data-toggle-visibility-target="content" class="fixed inset-0 hidden bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 relative w-3/4 max-w-md">
+      <!-- Botón de cierre del modal -->
+      <button type="button" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" data-action="toggle-visibility#close">
+        X
+      </button>
+
+      <!-- Contenido del modal -->
+      <% if message.image.attached? %>
+        <%= image_tag message.image, class: "w-full h-auto object-cover rounded" %>
+      <% end %>
+      <p class="text-gray-700 mt-4"><%= message.message %></p>
+    </div>
+  </div>
+</div>
+
+
 
     <div class="flex gap-1">
         <%= button_to edit_room_message_path(message, room_id: message.room), class:' text-sm font-medium bg-sky-800 text-white py-1 px-3 rounded', method: :get do %>

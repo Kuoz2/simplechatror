@@ -1,12 +1,17 @@
 class UserRoom < ApplicationRecord
   belongs_to :user
   belongs_to :room
-  after_commit on: :create do
-    broadcast_append_to(
-      'users_rooms_channel',
-      partial: 'shared/room',
-      locals:{room: Room.find(room_id)},
-      target: "user_#{user_id}_rooms"
-    )
+  #after_commit on: :create do
+   # broadcast_append_to(
+    #  'users_rooms_channel',
+     # partial: 'shared/room',
+      #locals:{room: Room.find(room_id)},
+      #target: "user_#{user_id}_rooms"
+   # )
+ # end
+
+ after_create_commit do
+  # Llama al Job para ejecutar el broadcasting en segundo plano
+    BroadcastUserRoomJob.perform_later(self)
   end
 end
