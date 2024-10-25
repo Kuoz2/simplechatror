@@ -1,10 +1,36 @@
- <%= turbo_frame_tag "room_#{room.id}" do%> 
-    <div class="text-white font-semibold ">
-    <%= link_to room_path(room), class:'font-semibold text-white text-sm', data: { turbo_frame: 'rooms_controller' } do %>
-    <%= room.name%>
-    <%end%>
-    <%  if current_user && current_user&.admin?  %>
-    <%= link_to 'Editar ', edit_room_path(room)%>
-    <%end%>
-    </div>
-<%end%>
+<%= turbo_frame_tag "room_#{room.id}" do %>
+  <div class="room-container">
+    <!-- Nombre de la Room -->
+    <%= link_to room_path(room), class: 'font-semibold text-white text-sm', data: { turbo_frame: 'rooms_controller' } do %>
+      <%= room.name %>
+    <% end %>
+
+    <!-- Estado del ticket -->
+    <% if room.estimated_end_time.present? %>
+      <% status_color = if Time.current < room.estimated_end_time - 1.hour
+                          'green'
+                        elsif Time.current < room.estimated_end_time
+                          'yellow'
+                        elsif Time.current > room.estimated_end_time
+                          'red'
+                        end %>
+      <div class="mt-2">
+        <span class="text-sm text-gray-300">Estado del ticket:</span>
+        <span class="status-indicator" style="color: <%= status_color %>;">
+          ●
+        </span>
+      </div>
+    <% end %>
+
+    <!-- Enlace de edición para el administrador -->
+    <% if defined?(current_user) && current_user&.admin? %>
+      <div class="mt-2">
+        <%unless room.finished?%>
+                <%= link_to 'Editar', edit_room_path(room), class: 'edit-link' %>
+
+          <%= link_to 'Marcar como Completada', complete_room_path(room), method: :patch, data: { turbo_method: :patch }, class: 'text-green-400 hover:text-green-600 text-sm ml-4' %>
+        <%end%>
+      </div>
+    <% end %>
+  </div>
+<% end %>

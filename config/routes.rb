@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     member do 
       post 'add_user', to: 'rooms#add_user'
       delete 'remove_user', to: 'rooms#remove_user'
+      patch :complete
+
     end
   end
   root 'rooms#index'

@@ -1,0 +1,25 @@
+/* Estilos para el contenedor de la Room */
+.room-container {
+    padding: 1rem;
+    background-color: #2d3748; /* Un tono de gris para el fondo */
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Indicador de estado */
+  .status-indicator {
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
+  }
+  
+  /* Enlace de edición */
+  .edit-link {
+    color: #63b3ed; /* Color azul claro */
+    font-size: 0.875rem; /* Texto pequeño */
+    text-decoration: none;
+  }
+  
+  .edit-link:hover {
+    color: #4299e1; /* Azul más oscuro al pasar el cursor */
+  }
+

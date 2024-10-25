@@ -1,0 +1,9 @@
+<section>
+<h3 class="text-white font-bold text-xl mt-3 text-center mb-2">Tareas completadas</h3>
+<div>
+    <% rooms_completed = current_user.admin? ? Room.where(completed: true): current_user.rooms.where(completed:true)%>
+    <% rooms_completed.each do |room|%>
+        <%= render 'shared/room', room: room %>
+    <%end%>
+</div>
+</section>

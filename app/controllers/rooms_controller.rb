@@ -1,7 +1,7 @@
 class RoomsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_room, only: %i[show edit update destroy add_user remove_user]
-  before_action :authorize_admin, only: %i{new create}
+  before_action :set_room, only: %i[show edit update destroy add_user remove_user complete]
+  before_action :authorize_admin, only: %i{new create complete}
 
   # GET /rooms or /rooms.json
   def index
@@ -54,6 +54,23 @@ class RoomsController < ApplicationController
    
   end
 
+  def complete
+    if @room.update(completed: true)
+      respond_to do |format|
+        format.html { redirect_to @room, notice: 'La tarea ha sido marcada como completada.' }
+        format.turbo_stream do
+          # Pasa `current_user` explícitamente al parcial
+          render turbo_stream: turbo_stream.replace("room_#{@room.id}", partial: 'shared/room', locals: { room: @room, current_user: current_user })
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to @room, alert: 'Hubo un problema al cerrar la tarea.' }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("room_#{@room.id}", partial: 'shared/error', locals: { message: 'Hubo un problema al cerrar la tarea.' }) }
+      end
+    end
+  end
+
   def add_user
 
     unless current_user.admin?
@@ -100,6 +117,9 @@ class RoomsController < ApplicationController
       redirect_to @room, alert: "Usuario no encontrado en esta room"
     end
   end
+
+
+ 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_room
@@ -108,7 +128,7 @@ class RoomsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def room_params
-      params.require(:room).permit(:name)
+      params.require(:room).permit(:name, :estimated_end_time, :complete)
     end
 
     def authorize_admin
