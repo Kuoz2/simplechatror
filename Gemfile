@@ -28,6 +28,13 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 gem 'devise'
+
+gem 'chartkick'
+
+gem 'groupdate'
+
+gem 'secure_headers'
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 

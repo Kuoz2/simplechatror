@@ -1,11 +1,27 @@
 <%= turbo_stream_from 'users_rooms_channel'%>
 <%= turbo_stream_from 'room_details_channel'%>
-<nav class="bg-[#181D31] w-60 flex flex-col items-center justify-between border border-sky-500 h-screen overflow-y-auto">
-   <div class="flex-1 overflow-y-auto w-full">
-    <%= render 'shared/user_rooms' %>
+<%= turbo_frame_tag 'rooms_controller' do %>
+  <div class="flex flex-col bg-[#181D31] w-60 h-screen border border-sky-500">
+
+ <%= turbo_frame_tag 'rooms_controller' do %>
+  <div class="flex flex-col bg-[#181D31] w-60 h-screen border border-sky-500">
+
+    <!-- Sidebar principal en columnas -->
+    <nav class="bg-[#181D31] flex flex-row h-full overflow-y-auto">
+      <!-- User Rooms (Izquierda) -->
+      <div class="flex-1 w-1/2 border-r border-sky-500">
+        <%= render 'shared/user_rooms' %>
+      </div>
+
+      <!-- Completed Rooms (Derecha) -->
+      <div class="flex-1 w-1/2">
+        <%= render 'shared/completed_rooms' %>
+      </div>
+    </nav>
+
+    <!-- Footer de ancho completo en la parte inferior -->
+    <div class="w-full">
+      <%= render 'shared/footer' %>
+    </div>
   </div>
-  <!-- Formulario fijo en la parte inferior -->
-  <div class="w-full">
-    <%= render 'shared/create_room' %>
-  </div>
-</nav>
+<% end %>

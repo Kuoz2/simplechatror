@@ -1,7 +1,7 @@
 class RoomsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_room, only: %i[show edit update destroy add_user remove_user complete]
-  before_action :authorize_admin, only: %i{new create complete}
+  before_action :set_room, only: %i[show edit update destroy add_user remove_user complete ]
+  before_action :authorize_admin, only: %i{new create complete }
 
   # GET /rooms or /rooms.json
   def index
@@ -118,7 +118,23 @@ class RoomsController < ApplicationController
     end
   end
 
-
+  def graficos
+    @completed_rooms = Room.where(completed: true)
+    @chart_data = @completed_rooms.map do |room|
+      start_date = room.created_at
+      end_date = room.estimated_end_time || room.updated_at
+      duration_hours = ((end_date - start_date) / 1.hour).round(2) # Calcula duración en horas
+  
+      {
+        name: room.name,
+        data: {
+          "Inicio" => start_date.strftime("%Y-%m-%d %H:%M:%S"),  # Fecha y hora de inicio
+          "Término" => end_date.strftime("%Y-%m-%d %H:%M:%S"),   # Fecha y hora de término
+          "Duración (horas)" => duration_hours                    # Duración en horas
+        }
+      }
+    end
+  end
  
   private
     # Use callbacks to share common setup or constraints between actions.

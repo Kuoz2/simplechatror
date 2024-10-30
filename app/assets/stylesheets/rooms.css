@@ -23,3 +23,16 @@
     color: #4299e1; /* Azul más oscuro al pasar el cursor */
   }
 
+  .footer {
+    background-color: #1A202C;
+    width: 100%; /* Resta el ancho de los sidebars izquierdo y derecho */
+    margin-left: 15rem; /* Desplaza el footer para alinearlo con el contenido principal */
+  }
+  
+  .chart-container {
+    background-color: #2B2F4A;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+  }
