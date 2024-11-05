@@ -5,16 +5,3 @@ import { application } from "controllers/application";
 // Eager load all controllers defined in the import map under controllers/**/*_controller
 import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading";
 eagerLoadControllersFrom("controllers", application)
-
-// Lazy load controllers as they appear in the DOM (remember not to preload controllers in import map!)
-// import { lazyLoadControllersFrom } from "@hotwired/stimulus-loading"
-// lazyLoadControllersFrom("controllers", application)
-import { Application } from "@hotwired/stimulus";
-import { definitionsFromContext } from "stimulus/webpack-helpers";
-
-const stimulusApplication = Application.start();
-eagerLoadControllersFrom("controllers", stimulusApplication);
-
-// Carga todos los controladores desde la carpeta actual
-const context = require.context("controllers", true, /\.js$/);
-application.load(definitionsFromContext(context));

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_24_190136) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_04_232109) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,6 +39,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_24_190136) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "message_tags", force: :cascade do |t|
+    t.integer "report_id", null: false
+    t.integer "message_id", null: false
+    t.integer "tagged_by_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_id"], name: "index_message_tags_on_message_id"
+    t.index ["report_id"], name: "index_message_tags_on_report_id"
+    t.index ["tagged_by_id"], name: "index_message_tags_on_tagged_by_id"
+  end
+
   create_table "messages", force: :cascade do |t|
     t.string "message"
     t.integer "user_id", null: false
@@ -48,6 +59,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_24_190136) do
     t.string "image"
     t.index ["room_id"], name: "index_messages_on_room_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
+  create_table "reports", force: :cascade do |t|
+    t.integer "room_id", null: false
+    t.integer "user_id", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_reports_on_room_id"
+    t.index ["user_id"], name: "index_reports_on_user_id"
   end
 
   create_table "rooms", force: :cascade do |t|
@@ -82,8 +103,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_24_190136) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "message_tags", "messages"
+  add_foreign_key "message_tags", "reports"
+  add_foreign_key "message_tags", "users", column: "tagged_by_id"
   add_foreign_key "messages", "rooms"
   add_foreign_key "messages", "users"
+  add_foreign_key "reports", "rooms"
+  add_foreign_key "reports", "users"
   add_foreign_key "user_rooms", "rooms"
   add_foreign_key "user_rooms", "users"
 end

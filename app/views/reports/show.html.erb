@@ -1,0 +1,46 @@
+<div class="max-w-5xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">Informe de la Room: <%= @report.room.name %></h1>
+  <p class="text-gray-600 mb-4">Encargado: <%= @report.user.email %></p>
+  <p class="text-gray-600 mb-8"><%= @report.description %></p>
+
+  <div class="grid grid-cols-2 gap-6">
+    <!-- Panel Izquierdo: Mensajes No Etiquetados -->
+    <div>
+      <h2 class="text-xl font-semibold text-gray-700 mb-4">Mensajes No Etiquetados</h2>
+      <% @messages.reject { |m| @report.message_tags.exists?(message: m) }.each do |message| %>
+        <div class="p-4 mb-4 bg-gray-100 rounded-lg shadow-sm">
+          <p><strong><%= message.user.email %>:</strong> <%= message.message %></p>
+          <% if message.image.present? %>
+            <%= image_tag message.image, alt: 'Imagen del mensaje', class: 'mt-2 rounded w-full' %>
+          <% end %>
+          <%= button_to 'Etiquetar para el informe', report_path(@report, message_id: message.id), method: :patch, class: 'mt-2 inline-block bg-blue-600 text-white font-semibold py-1 px-3 rounded hover:bg-blue-700' %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Panel Derecho: Mensajes Etiquetados para el Informe -->
+    <div>
+      <h2 class="text-xl font-semibold text-gray-700 mb-4">Mensajes para el Informe</h2>
+      <% @messages.select { |m| @report.message_tags.exists?(message: m) }.each do |message| %>
+        <div class="p-4 mb-4 bg-blue-100 rounded-lg shadow-sm">
+          <p><strong><%= message.user.email %>:</strong> <%= message.message %></p>
+          <% if message.image.present? %>
+            <%= image_tag message.image, alt: 'Imagen del mensaje', class: 'mt-2 rounded w-full' %>
+          <% end %>
+
+          <!-- Botón para quitar la etiqueta -->
+          <%= button_to 'Quitar del informe', report_path(@report, message_id: message.id), method: :patch, class: 'mt-2 inline-block bg-red-600 text-white font-semibold py-1 px-3 rounded hover:bg-red-700' %>
+
+          <!-- Cuadro de texto para agregar notas al mensaje -->
+          <%= form_with url: report_path(@report, message_id: message.id), method: :patch, local: true do |f| %>
+            <div class="mt-4">
+              <label for="note_<%= message.id %>" class="block text-gray-700 font-medium">Añadir Nota (máximo 500 palabras)</label>
+              <%= f.text_area :note, rows: 3, maxlength: 500, class: "w-full mt-2 p-2 border border-gray-300 rounded" %>
+              <%= f.submit "Guardar Nota", class: "mt-2 inline-block bg-green-600 text-white font-semibold py-1 px-3 rounded hover:bg-green-700" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

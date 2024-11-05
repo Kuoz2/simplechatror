@@ -24,7 +24,6 @@
   }
 
   .footer {
-    background-color: #1A202C;
     width: 100%; /* Resta el ancho de los sidebars izquierdo y derecho */
     margin-left: 15rem; /* Desplaza el footer para alinearlo con el contenido principal */
   }

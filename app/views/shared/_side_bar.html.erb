@@ -2,26 +2,26 @@
 <%= turbo_stream_from 'room_details_channel'%>
 <%= turbo_frame_tag 'rooms_controller' do %>
   <div class="flex flex-col bg-[#181D31] w-60 h-screen border border-sky-500">
-
- <%= turbo_frame_tag 'rooms_controller' do %>
-  <div class="flex flex-col bg-[#181D31] w-60 h-screen border border-sky-500">
-
-    <!-- Sidebar principal en columnas -->
-    <nav class="bg-[#181D31] flex flex-row h-full overflow-y-auto">
-      <!-- User Rooms (Izquierda) -->
-      <div class="flex-1 w-1/2 border-r border-sky-500">
+  <div class="flex justify-start mb-4">
+  <%= link_to root_path, class: 'text-white  hover:text-gray-800 font-semibold', data:{turbo: false} do %>
+    <span class="inline-flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Volver al inicio
+    </span>
+  <% end %>
+</div>
+    <!-- Contenedor del Sidebar -->
+    <nav class="bg-[#181D31] h-full flex flex-col">
+      <!-- User Rooms (Sección Desplazable) -->
+      <div class="flex-1 overflow-y-auto border-r border-sky-500">
         <%= render 'shared/user_rooms' %>
       </div>
-
-      <!-- Completed Rooms (Derecha) -->
-      <div class="flex-1 w-1/2">
-        <%= render 'shared/completed_rooms' %>
+      <!-- Crear Room (Sección Fija en la Parte Inferior) -->
+      <div class="border-t border-sky-500">
+        <%= render 'shared/create_room' %>
       </div>
     </nav>
-
-    <!-- Footer de ancho completo en la parte inferior -->
-    <div class="w-full">
-      <%= render 'shared/footer' %>
-    </div>
   </div>
 <% end %>

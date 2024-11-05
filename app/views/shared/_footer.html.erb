@@ -1,11 +1,10 @@
-<footer class="footer text-white py-4 flex justify-around border-t border-gray-700 fixed bottom-0 left-0 w-full">
-  <%= link_to 'Crear Usuario', new_user_registration_path, class: 'px-4 py-2 bg-green-600 rounded hover:bg-green-700 font-semibold text-sm', data: { turbo: false } %>
-  
-    <%= link_to 'Ver Estadísticas', graficos_rooms_path,
-            class: 'px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 font-semibold text-sm',
-            data: { turbo_frame: 'rooms_controller', turbo_method: 'get'} %>
+<footer class=" text-white py-4 flex justify-around border-t border-gray-700 w-full bg-[#181D31]">
+
+  <%= link_to 'Ver Estadísticas', graficos_rooms_path,
+              class: 'px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 font-semibold text-sm',
+              data: { turbo_frame: 'rooms_controller', turbo_method: 'get' } %>
     
   <%= link_to 'Flujo de Tareas', '#', class: 'px-4 py-2 bg-yellow-600 rounded hover:bg-yellow-700 font-semibold text-sm' %>
   <%= link_to 'Usuarios', '#', class: 'px-4 py-2 bg-purple-600 rounded hover:bg-purple-700 font-semibold text-sm' %>
-  <%= link_to 'Informes', '#', class: 'px-4 py-2 bg-red-600 rounded hover:bg-red-700 font-semibold text-sm' %>
+  <%= link_to 'Informes', reports_path, class: 'px-4 py-2 bg-red-600 rounded hover:bg-red-700 font-semibold text-sm', data:{turbo:false}%>
 </footer>

@@ -1,0 +1,29 @@
+<%= turbo_frame_tag "rooms_controller" do %>
+  <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Ingresar nuevo usuario</h2>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'flex flex-col', data: { turbo: false } }) do |f| %>
+    <!-- Contenido del formulario de registro -->
+    <div class="flex gap-1 my-2 items-center w-86">
+      <%= f.label :email, 'Correo', class: 'font-semibold text-sm w-24 text-gray-700' %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'text-sm font-medium rounded w-full p-2 border border-gray-300' %>
+    </div>
+
+    <div class="flex gap-1 items-center w-96">
+      <%= f.label :password, 'Contraseña', class: 'font-semibold text-sm w-24 text-gray-700' %>
+      <%= f.password_field :password, autocomplete: "new-password", class: 'text-sm font-medium rounded w-full p-2 border border-gray-300' %>
+    </div>
+
+    <div class="flex gap-1 items-center w-96">
+      <%= f.label :password_confirmation, 'Confirmar', class: 'font-semibold text-sm w-24 text-gray-700' %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'text-sm font-medium rounded w-full p-2 border border-gray-300' %>
+    </div>
+
+    <div class="flex gap-1 items-center w-96">
+      <%= f.label :role, 'Rol', class: 'font-semibold text-sm w-24 text-gray-700' %>
+      <%= f.select :role, [['Admin', 'admin'], ['Usuario', 'user']], { prompt: 'Seleccione un rol' }, class: 'text-sm font-medium rounded w-full p-2 border border-gray-300' %>
+    </div>
+
+    <div class="flex justify-center mt-4">
+      <%= f.submit "Registrar", class: 'bg-green-800 hover:bg-green-700 text-white font-semibold rounded p-3 w-full max-w-xs' %>
+    </div>
+  <% end %>
+<% end %>

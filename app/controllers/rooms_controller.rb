@@ -118,6 +118,8 @@ class RoomsController < ApplicationController
     end
   end
 
+
+
   def graficos
     @completed_rooms = Room.where(completed: true)
     @chart_data = @completed_rooms.map do |room|

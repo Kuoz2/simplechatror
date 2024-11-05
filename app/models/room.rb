@@ -1,5 +1,6 @@
 class Room < ApplicationRecord
   validates :name, presence: true
+  has_one :report
   has_many :user_rooms
   has_many :users, through: :user_rooms
   has_many :messages
@@ -9,6 +10,7 @@ class Room < ApplicationRecord
   def finished?
     completed || (estimated_end_time.present? && Time.current > estimated_end_time)
   end
+
 
 
   private

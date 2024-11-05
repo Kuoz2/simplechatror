@@ -1,0 +1,16 @@
+<div class="max-w-3xl text-center mx-auto p-6 bg-white shadow-lg rounded-lg">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">Informe de Rooms</h1>
+
+  <% @rooms.each do |room| %>
+    <div class="mb-4 p-4 bg-gray-100 rounded-lg shadow-sm">
+      <h2 class="text-xl font-semibold text-gray-700"><%= room.name %></h2>
+      <div class="mt-2">
+        <% if room.report %>
+          <%= link_to 'Ver informe', report_path(room.report), class: 'inline-block bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700' %>
+        <% else %>
+          <%= button_to 'Crear informe', reports_path(room_id: room.id), method: :post, class: 'inline-block bg-green-600 text-white font-semibold py-2 px-4 rounded hover:bg-green-700', data: { turbo: false } %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
