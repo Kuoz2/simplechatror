@@ -1,3 +1,4 @@
+<%= stylesheet_link_tag 'reports' ,media: 'all', 'data-turbo-track': 'reload' %>
 <div class="max-w-5xl mx-auto p-6 bg-white shadow-lg rounded-lg">
   <h1 class="text-3xl font-bold text-gray-800 mb-6">Informe de la Room: <%= @report.room.name %></h1>
   <p class="text-gray-600 mb-4">Encargado: <%= @report.user.email %></p>
@@ -11,7 +12,7 @@
         <div class="p-4 mb-4 bg-gray-100 rounded-lg shadow-sm">
           <p><strong><%= message.user.email %>:</strong> <%= message.message %></p>
           <% if message.image.present? %>
-            <%= image_tag message.image, alt: 'Imagen del mensaje', class: 'mt-2 rounded w-full' %>
+            <%= image_tag message.image, alt: 'Imagen del mensaje', class: 'img-report mt-2 rounded w-full' %>
           <% end %>
           <%= button_to 'Etiquetar para el informe', report_path(@report, message_id: message.id), method: :patch, class: 'mt-2 inline-block bg-blue-600 text-white font-semibold py-1 px-3 rounded hover:bg-blue-700' %>
         </div>
@@ -25,8 +26,8 @@
         <div class="p-4 mb-4 bg-blue-100 rounded-lg shadow-sm">
           <p><strong><%= message.user.email %>:</strong> <%= message.message %></p>
           <% if message.image.present? %>
-            <%= image_tag message.image, alt: 'Imagen del mensaje', class: 'mt-2 rounded w-full' %>
-          <% end %>
+            <%= image_tag message.image, alt: 'Imagen del mensaje', class: 'img-report mt-2 rounded' %> 
+         <% end %>
 
           <!-- Botón para quitar la etiqueta -->
           <%= button_to 'Quitar del informe', report_path(@report, message_id: message.id), method: :patch, class: 'mt-2 inline-block bg-red-600 text-white font-semibold py-1 px-3 rounded hover:bg-red-700' %>

@@ -1,0 +1,28 @@
+<div class="min-h-screen flex flex-col">
+<h2>Informe de Eficiencia de Trabajadores</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Trabajador o Trabajadora</th>
+      <th>Tareas Completadas</th>
+      <th>Tiempo Promedio de Resolución (horas)</th>
+      <th>Porcentaje de Cumplimiento de Plazos</th>
+      <th>Tareas Fuera del Tiempo</th>
+      <th>Porcentaje de Tareas Fuera de Tiempo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% worker_efficiency_report.each do |report| %>
+      <tr>
+        <td><%= report[:user].email %></td>
+        <td><%= report[:completed_tasks] %></td>
+        <td><%= report[:average_completion_time] %> horas</td>
+        <td><%= report[:on_time_percentage] %> %</td>
+        <td><%= report[:late_task_count] || 0 %></td>
+        <td><%= report[:late_task_percentage] || 0 %> %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+    <%= render 'shared/footer' %>
+</div>

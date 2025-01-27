@@ -1,0 +1,52 @@
+<div class="mb-8">
+  <h2 class="text-xl font-semibold">Tareas Terminadas a Tiempo por Mes</h2>
+  <% @on_time_rooms_by_month.each do |month, rooms| %>
+    <div class="mb-4">
+      <h3 class="font-semibold text-gray-700 cursor-pointer" onclick="toggleDisplay('<%= month %>_on_time')">
+        <%= month %> - <span class="text-green-600"><%= @monthly_completion_percentage[month][:on_time] %>% a tiempo</span>
+      </h3>
+      <div id="<%= month %>_on_time" class="hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <% rooms.each do |room| %>
+            <div class="bg-green-100 p-4 rounded-lg shadow-md">
+              <h3 class="font-bold"><%= room.name %></h3>
+              <p>Completado el: <%= room.completion_date.strftime("%d %B %Y") %></p>
+              <p>Encargado: <%= room.users.map(&:email).join(', ') %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<!-- Tareas Fuera de Tiempo Agrupadas por Mes -->
+<div class="mb-8">
+  <h2 class="text-xl font-semibold">Tareas Terminadas Fuera de Tiempo por Mes</h2>
+  <% @late_rooms_by_month.each do |month, rooms| %>
+    <div class="mb-4">
+      <h3 class="font-semibold text-gray-700 cursor-pointer" onclick="toggleDisplay('<%= month %>_late')">
+        <%= month %> - <span class="text-red-600"><%= @monthly_completion_percentage[month][:late] %>% fuera de tiempo</span>
+      </h3>
+      <div id="<%= month %>_late" class="hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <% rooms.each do |room| %>
+            <div class="bg-red-100 p-4 rounded-lg shadow-md">
+              <h3 class="font-bold"><%= room.name %></h3>
+              <p>Completado el: <%= room.completion_date.strftime("%d %B %Y") %></p>
+              <p>Encargado: <%= room.users.map(&:email).join(', ') %></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<!-- Script para mostrar/ocultar tareas de cada mes -->
+<script>
+  function toggleDisplay(id) {
+    const element = document.getElementById(id);
+    element.classList.toggle("hidden");
+  }
+</script>

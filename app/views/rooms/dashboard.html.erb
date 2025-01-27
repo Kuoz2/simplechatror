@@ -1,0 +1,29 @@
+<!-- app/views/rooms/dashboard.html.erb -->
+<h1>Panel de Control de Supervisión</h1>
+
+<div class="dashboard-metrics">
+  <div class="metric">
+    <h2>Total de Tareas</h2>
+    <p><%= @total_tasks %></p>
+  </div>
+
+  <div class="metric">
+    <h2>Tareas Completadas</h2>
+    <p><%= @completed_tasks %></p>
+  </div>
+
+  <div class="metric">
+    <h2>Tareas en Progreso</h2>
+    <p><%= @in_progress_tasks %></p>
+  </div>
+
+  <div class="metric">
+    <h2>Tareas Vencidas</h2>
+    <p><%= @overdue_tasks %></p>
+  </div>
+
+  <div class="metric">
+    <h2>Promedio de Tiempo de Completitud (Horas)</h2>
+    <p><%= @average_completion_time %></p>
+  </div>
+</div>

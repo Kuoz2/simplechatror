@@ -24,6 +24,10 @@
       <span class="text-sm text-gray-300">Tiempo:</span>
       <span class="text-xs"><%= Time.current.strftime("%H:%M") %></span>
     </div>
+    <div class="mt-2">
+      <span class="text-sm text-gray-300">Finaliza:</span>
+      <span class="text-xs"><%= room.estimated_end_time.strftime("%H:%M") %></span>
+    </div>
     <% end %>
 
     <!-- Enlace de edición para el administrador -->
@@ -37,4 +41,4 @@
       </div>
     <% end %>
   </div>
-<% end %>
+  <%end%>

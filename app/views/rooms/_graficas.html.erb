@@ -1,6 +1,11 @@
-<div class="container mx-auto">
-  <h1 class="text-white font-bold text-2xl mb-4">Estadísticas de Rooms Completadas</h1>
-  <div class="chart-container">
-    <%= line_chart @chart_data, xtitle: "Fecha", ytitle: "Duración (Horas)", height: "500px" %>
+<div class="min-h-screen flex flex-col">
+  <div class="container mx-auto flex-grow">
+    <h1 class="text-white font-bold text-2xl mb-4">Estadísticas de Rooms Completadas</h1>
+    <div class="chart-container">
+      <%= line_chart @chart_data, xtitle: "Fecha", ytitle: "Duración (Horas)", height: "500px" %>
+    </div>
   </div>
-</div>
+  <footer class="w-full bg-gray-800 text-white py-4">
+    <%= render 'shared/footer' %>
+  </footer>
+</div>>

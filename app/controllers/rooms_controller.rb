@@ -1,7 +1,7 @@
 class RoomsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_room, only: %i[show edit update destroy add_user remove_user complete ]
-  before_action :authorize_admin, only: %i{new create complete }
+  before_action :authorize_admin, only: %i{new create complete dashboard}
 
   # GET /rooms or /rooms.json
   def index
@@ -54,13 +54,34 @@ class RoomsController < ApplicationController
    
   end
 
+  def dashboard
+    # Aquí defines los KPI
+    @total_tasks = Room.count
+    @completed_tasks = Room.where(completed: true).count
+    @in_progress_tasks = Room.where(completed: false).where("estimated_end_time > ?", Time.current).count
+    @overdue_tasks = Room.where(completed: false).where("estimated_end_time < ?", Time.current).count
+
+    completed_rooms = Room.where(completed: true)
+    if completed_rooms.any?
+      total_completion_time = completed_rooms.sum { |room| (room.updated_at - room.created_at) / 1.hour }
+      @average_completion_time = (total_completion_time / completed_rooms.count).round(2)
+    else
+      @average_completion_time = 0
+    end
+  end
+
+
   def complete
     if @room.update(completed: true)
       respond_to do |format|
         format.html { redirect_to @room, notice: 'La tarea ha sido marcada como completada.' }
         format.turbo_stream do
-          # Pasa `current_user` explícitamente al parcial
-          render turbo_stream: turbo_stream.replace("room_#{@room.id}", partial: 'shared/room', locals: { room: @room, current_user: current_user })
+          render turbo_stream: [
+            # Elimina el frame de la room en el sidebar izquierdo
+            turbo_stream.remove("room_#{@room.id}"),
+            # Agrega la room al sidebar de tareas completadas
+            turbo_stream.append("completed_rooms", partial: 'shared/room', locals: { room: @room, current_user: current_user })
+          ]
         end
       end
     else
@@ -121,7 +142,10 @@ class RoomsController < ApplicationController
 
 
   def graficos
-    @completed_rooms = Room.where(completed: true)
+    current_month_start = Time.current.beginning_of_month
+    current_month_end = Time.current.end_of_month
+
+    @completed_rooms = Room.where(completed: true,created_at: current_month_start..current_month_end)
     @chart_data = @completed_rooms.map do |room|
       start_date = room.created_at
       end_date = room.estimated_end_time || room.updated_at

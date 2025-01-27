@@ -1,0 +1,7 @@
+<%= turbo_frame_tag "rooms_controller" do %>
+  <div class="flex w-full h-full">
+    <div class="flex-1 p-6 bg-gray-800">
+      <%= render 'worker_efficiency_data', worker_efficiency_report: @worker_efficiency_report %> <!-- Pasa la variable aquí -->
+    </div>  
+  </div>
+<% end %>

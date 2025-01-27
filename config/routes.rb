@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :task_flows, only: [:index]
+  get 'reports/worker_efficiency', to: 'reports#worker_efficiency', as: 'worker_efficiency_report'
   resources :reports, only:[:index, :show, :create, :update]
   devise_for :users, controllers: {
     registrations: 'users/registrations' ,
@@ -17,6 +19,9 @@ Rails.application.routes.draw do
     end
     collection do 
       get "graficos"
+    end
+    collection do 
+      get 'dashboard'
     end
   end
   root 'rooms#index'

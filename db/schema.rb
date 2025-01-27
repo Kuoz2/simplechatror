@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_04_232109) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_05_200713) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -77,6 +77,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_04_232109) do
     t.datetime "updated_at", null: false
     t.datetime "estimated_end_time"
     t.boolean "completed"
+    t.date "completion_date"
+    t.time "completion_time"
   end
 
   create_table "user_rooms", force: :cascade do |t|
