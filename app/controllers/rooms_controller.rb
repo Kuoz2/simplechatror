@@ -28,6 +28,7 @@ class RoomsController < ApplicationController
   # POST /rooms or /rooms.json
   def create
     @room = Room.new(room_params)
+    response.headers["Cache-Control"] = "no-cache, no-store"
     respond_to do |format|
       if @room.save
         UserRoom.create(room: @room, user: current_user)

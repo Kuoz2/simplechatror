@@ -1,14 +1,19 @@
 SecureHeaders::Configuration.default do |config|
     config.csp = {
       default_src: ["'self'"],
+      img_src: %w['self' data:],
   
       # Permitir los scripts necesarios y 'unsafe-inline' para scripts en línea
       script_src: [
         "'self'", 
+        "https://cdn.skypack.dev",  
         "https://www.gstatic.com", 
         "https://cdn.jsdelivr.net", 
-        "http://www.google.com/jsapi", 
+        "https://www.google.com/jsapi", 
         "https://cdn.tailwindcss.com", 
+        "https://code.jquery.com",      
+        "https://cdn.datatables.net",
+        "https://unpkg.com",
         "'unsafe-inline'"
       ],
   

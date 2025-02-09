@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :task_flows, only: [:index]
   get 'reports/worker_efficiency', to: 'reports#worker_efficiency', as: 'worker_efficiency_report'
+  get 'reports/report_view', to: 'reports#report_view', as: 'report_view'
   resources :reports, only:[:index, :show, :create, :update]
   devise_for :users, controllers: {
     registrations: 'users/registrations' ,

@@ -1,3 +1,5 @@
+<% resource ||= User.new %>
+<% resource_name ||= :user %>
 <%= turbo_frame_tag "rooms_controller" do %>
   <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Ingresar nuevo usuario</h2>
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'flex flex-col', data: { turbo: false } }) do |f| %>

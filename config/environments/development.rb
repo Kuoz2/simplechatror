@@ -2,8 +2,34 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+  config.content_security_policy do |policy|
+    policy.default_src :self
+    policy.script_src :self,
+                      :unsafe_inline, 
+                      :unsafe_eval,
+                      "https://cdn.skypack.dev",
+                      "https://cdn.tailwindcss.com",
+                      "https://code.jquery.com",
+                      "https://cdn.datatables.net",
+                      "https://www.gstatic.com",
+                      "https://www.google.com",
+                      "https://unpkg.com"
+    policy.style_src :self, :unsafe_inline,
+                     "https://cdn.datatables.net",
+                     "https://cdn.jsdelivr.net",
+                     "https://www.gstatic.com",
+                     "https://cdn.tailwindcss.com"
+    policy.img_src :self, :data
+    policy.connect_src :self
+    policy.font_src :self,
+                     "https://cdn.jsdelivr.net",
+                     "https://www.gstatic.com"
+    policy.object_src :none
+  end
 
-  # In the development environment your application's code is reloaded any time
+  # Set to false to apply CSP in development
+  config.content_security_policy_report_only = false
+   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
@@ -13,7 +39,7 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
-
+  config.content_security_policy_report_only = false
   # Enable server timing
   config.server_timing = true
 

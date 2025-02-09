@@ -1,4 +1,7 @@
-ENV["BUNDLE_GEMFILE"] ||= File.expand_path("../Gemfile", __dir__)
+ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../Gemfile', __dir__)
 
-require "bundler/setup" # Set up gems listed in the Gemfile.
-require "bootsnap/setup" # Speed up boot time by caching expensive operations.
+# Agrega esta línea para requerir el Logger del estándar de Ruby
+require 'logger'
+
+require 'bundler/setup' # Configura las gemas listadas en el Gemfile.
+require 'bootsnap/setup'

@@ -12,7 +12,10 @@ class ReportsController < ApplicationController
     @messages = @report.room.messages.includes(:user)
   end
 
+  
+
   def create
+    response.headers["Cache-Control"] = "no-cache, no-store"
     @report = @room.build_report(user: current_user, description: params[:description])
     if @report.save 
       redirect_to report_path(@report), notice: 'Informe creado con éxito'
@@ -45,9 +48,23 @@ class ReportsController < ApplicationController
     format.html do
       render 'worker_efficiency' # Esta vista renderiza el Turbo Frame y carga el parcial
     end
+    
+    format.json do
+      render json: {data:@worker_efficiency_report.map { |report| format_report(report) }}
+    end
   end
   end
 
+  def format_report(report)
+    {
+      "user.email" => report[:user].email,
+      "completed_tasks" => report[:completed_tasks],
+      "average_completion_time" => "#{report[:average_completion_time]} horas",
+      "on_time_percentage" => "#{report[:on_time_percentage]} %",
+      "late_task_count" => report[:late_task_count],
+      "late_task_percentage" => "#{report[:late_task_percentage]} %"
+    }
+  end
   
   private
 # Acción de worker_efficiency

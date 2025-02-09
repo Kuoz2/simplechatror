@@ -1,13 +1,36 @@
-<div data-controller="form imagen-preview">
-        <%= form_with(model: [room, message], id: 'message_form', class: 'w-full flex flex-col', data: {controller:'form', action: 'submit->form#resetComponent'}, multipart: true) do |f|%>
-        <div class="flex w-full ">
-            <%= f.text_field :message, class:'w-full rounded shadow text-sm font-semibold border-gray-100' %>
-            <%= f.file_field :image, class: 'font-semibold text-sm mb-1', data: { action: 'change->imagen-preview#preview', imagen_preview_target: 'input' } %>
-            <%= f.submit 'Subir desarrollo de la tarea',class: 'bg-green-600 text-white font-semibold rounded p-2' %>
-        </div>
+<%= form_with(model: [room, message], remote:true, id: 'message_form', url: room_messages_path(room), method: :post,
+    class: 'w-full flex flex-col gap-4 p-4 bg-white shadow-md rounded', 
+   data: {controller:'form', action: 'turbo:submit-end->form#resetComponent'}, multipart: true) do |form| %>
 
-        <div class="mt-2">
-            <img data-imagen-preview-target="preview" class="hidden w-32 h-32 object-cover rounded" alt="Vista previa" />
-        </div>
-    <%end%>
+  <!-- Campo de Mensaje (TextArea en lugar de TextField) -->
+  <div class="flex flex-col">
+    <label for="message" class="font-semibold text-gray-700 mb-1">Mensaje (máx. 500 palabras)</label>
+    <%= form.text_area :message, class: 'w-full p-2 rounded border border-gray-300 text-sm resize-none', 
+        rows: 6, maxlength: 2500, 
+        oninput: "document.getElementById('charCount').innerText = this.value.length + ' / 2500 caracteres'" %>
+    <small id="charCount" class="text-gray-500 mt-1">0 / 2500 caracteres</small>
+  </div>
+
+  <!-- Campo de Imagen -->
+<div data-controller="preview">
+  <div class="flex flex-col" >
+    <label for="image" class="font-semibold text-gray-700 mb-1">Adjuntar Imagen</label>
+    <%= form.file_field :image, class: 'text-sm border border-gray-300 p-2 rounded', 
+        data: { action: 'change->preview#preview', preview_target: 'input' } %>
+  </div>
+
+  <!-- Vista Previa de la Imagen -->
+  <div class="flex justify-center mt-4" >
+    <img data-preview-target="preview" 
+         class="hidden w-32 h-32 object-cover rounded border border-gray-300 shadow-sm" 
+         alt="Vista previa de la imagen" />
+  </div>
 </div>
+
+  <!-- Botón de Envío -->
+  <div class="flex justify-center">
+    <%= form.submit 'Subir desarrollo de la tarea', 
+        class: 'bg-green-600 text-white font-semibold rounded p-3 w-full md:w-1/2 hover:bg-green-700 transition' %>
+  </div>
+
+<% end %>

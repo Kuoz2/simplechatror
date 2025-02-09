@@ -1,22 +1,45 @@
 <%= turbo_frame_tag 'rooms_controller' do %>
-<%= turbo_stream_from 'room_message_channel'%>
-    <main class="flex w-full h-screen bg-[#181D31]">
-        <%= render 'shared/side_bar' %>
-        <section class="w-5/6 flex flex-col gap-5 h-screen px-5">
-            <%= render 'room', room: @room%>
+  <%= turbo_stream_from 'room_message_channel' %>
+  <main class="flex w-full h-screen bg-[#181D31]">
+    <%= render 'shared/side_bar' %>
+    
+    <section class="w-5/6 flex flex-col gap-5 h-screen px-5">
+      <%= render 'room', room: @room %>
 
-            <div class="flex flex-col w-full items-center">
-                <div class="flex flex-col w-5/6 items-center justify-center">
-                    <div class="h-72 w-5/6 bg-white rounded p-2 my-5 overflow-y-auto" id="room_message_div">
-                        <% @room.messages.order(:created_at).each do |message| %>
-                        <%= render 'messages/message', {message: message}%>
-                        <%end%>
-                    </div>
-                </div>
-                    <div class="flex flex-col w-5/6 items-center justify-center">
-                        <%= render 'messages/form', {room:@room, message:Message.new} %>
-                    </div>
-            </div>
-        </section>
-    </main>
-<%end%>
+      <div class="flex flex-col w-full items-center" data-controller="modal">
+        <!-- BOTÓN PARA ABRIR EL MODAL -->
+        <button type="button" class="text-white bg-blue-600 px-4 py-2 rounded" 
+                data-action="modal#open">
+          Ingresar nuevo avance
+        </button>
+
+        <!-- LISTA DE MENSAJES -->
+        <div class="flex flex-col w-5/6 items-center justify-center">
+          <div id="room_message_div" class="h-72 w-5/6 bg-white rounded p-2 my-5 overflow-y-auto" >
+            <% @room.messages.order(:created_at).each do |message| %>
+              <%= render 'messages/message', { message: message } %>
+            <% end %>
+          </div>
+        </div>
+        <div data-modal-target="modal"
+     class="fixed inset-0 invisible opacity-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50 transition-opacity duration-300 w-full h-full">
+  <div class="bg-white rounded-lg p-6 relative w-full h-full max-w-full max-h-[90vh] max-h-full overflow-auto  ">
+    <!-- BOTÓN PARA CERRAR -->
+    <button type="button" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl"
+            data-action="modal#close">
+      ✖
+    </button>
+    
+    <!-- CONTENIDO DEL MODAL -->
+    <h2 class="text-lg font-bold mb-4 text-center">Nuevo Avance</h2>
+    <div class="p-4">
+      <%= render 'messages/form', { room: @room, message: Message.new } %>
+    </div>
+  </div>
+</div>
+      </div>
+    </section>
+  </main>
+<% end %>
+
+<!-- MODAL -->

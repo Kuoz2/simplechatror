@@ -1,7 +1,7 @@
   
 <%= stylesheet_link_tag 'rooms', media: 'all', 'data-turbo-track': 'reload' %>
 <%= turbo_frame_tag 'rooms_controller' do %>
-     <div class="flex h-screen w-full">
+     <div class="flex h-screen w-full" >
     
     <!-- Sidebar Izquierdo -->
     <%= render 'shared/side_bar' %>
@@ -10,7 +10,7 @@
     <div class="flex flex-col justify-between h-full flex-grow">
       
       <!-- Contenido Principal en el Centro -->
-      <section class="flex flex-col items-center justify-center gap-5 flex-grow w-full">
+      <section class="flex flex-col items-center justify-center gap-5 flex-grow w-full" >
         <%if current_user&.admin?%>
           <%= turbo_frame_tag "rooms_controller" do %>
             <%= render 'devise/registrations/registration_form', resource: User.new, resource_name: :user %>

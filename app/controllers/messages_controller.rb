@@ -7,7 +7,11 @@ def create
     
     respond_to do |format|
       if @message.save
-        format.turbo_stream
+        format.turbo_stream { render turbo_stream: turbo_stream.append("room_message_div", partial: "messages/message", locals: { message: @message }) }
+        format.html { redirect_to room_path(@room), notice: "Mensaje enviado correctamente" }
+      else
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("message_form", partial: "messages/form", locals: { room: @room, message: @message }) }
+        format.html { render :new, status: :unprocessable_entity }
       end
     end
 end
@@ -33,10 +37,12 @@ end
 
 
 def destroy
+  @message = Message.find(params[:id]) # Asegurar que encontramos el mensaje
   @message.destroy
 
   respond_to do |format|
-      format.turbo_stream
+    format.turbo_stream { render turbo_stream: turbo_stream.remove("message_#{@message.id}") }
+    format.html { redirect_to room_path(@message.room), notice: "Mensaje eliminado correctamente" }
   end
 end
 

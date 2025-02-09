@@ -12,5 +12,6 @@
  *
  *= require_tree .
  *= require_self
+ *= require reports
  */
  @import "application.tailwind.css";

@@ -35,3 +35,17 @@
     padding: 20px;
     margin: 20px 0;
   }
+
+  .custom-datetime-select select {
+    background-color: white; /* Fondo blanco */
+    color: black; /* Texto negro */
+    border: 1px solid #ccc; /* Borde gris */
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 12px; /* Tamaño de fuente */
+  }
+  
+  .custom-datetime-select option {
+    background-color: white; /* Fondo blanco */
+    color: black; /* Texto negro */
+  } 

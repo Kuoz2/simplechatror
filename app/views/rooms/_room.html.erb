@@ -1,9 +1,8 @@
-<section class="flex flex-col gap-2 mt-10 items-center justify-center" id="room_show_<%= "#{room.id}"%>">
+<section class="flex flex-col gap-2 mt-8 items-center justify-center" id="room_show_<%= "#{room.id}"%>">
   <div class="flex flex-col">
     <h3 class="font-bold text-3xl text-white">
       <%= room.name%> - Room
     </h3>
-    <span class="text-white font-semibold">Usuarios: </span>
   </div>
   <section>
     <div class="py-2 px-10 flex flex-col gap-1 items-center border-sky-600 border rounded-lg my-2 shadow-lg w-96">
@@ -20,8 +19,9 @@
       <%end%>
       <%end%>
     </div>
+  <%if current_user&.admin?%><!--Solo los administradores pueden ver los usuarios disponibles-->
     <div class="py-2 px-10 flex flex-col gap-1 items-center border-sky-600 border rounded-lg my-2 shadow-lg w-96">
-      <h3 class="text-white font-semibold text-center">Agregar usarios</h3>
+      <h3 class="text-white font-semibold text-center">Usuarios disponibles</h3>
       <%User.all.each do |user|%>
         <% next if room.users.include?(user)%>
         <%= form_with url: add_user_room_path(room_id: room.id), method: :post, local: true do %>
@@ -35,5 +35,6 @@
           <%end%>
             <%end%>
     </div>
+    <%end%>
   </section>
 </section>
